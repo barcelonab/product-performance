@@ -1,4 +1,1 @@
 **This report assesses which products had higher sales in a specific year and compares them to the previous year or the current year. The purpose is to analyze which items have decreased or increased in performance.**
-
-
-  

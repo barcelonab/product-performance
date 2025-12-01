@@ -1,0 +1,64 @@
+table _measures
+	lineageTag: a4d25094-9fa6-40f6-b72c-fa3988e2f19b
+
+	measure 'Total Sales' = SUM(Sales[Sales Amount])
+		lineageTag: b0f6a7c7-5736-45b6-92e6-fadc336e57a7
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Last Year Sales' =
+			
+			CALCULATE([Total Sales], SAMEPERIODLASTYEAR(DateTable[Date]))
+		lineageTag: 1e3fab58-1fe9-4e79-913e-6aa1bb34da8d
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '2025 - 2024 Difference' = [Total Sales] - [Last Year Sales]
+		lineageTag: 435b5d22-e2c2-438b-8f0a-88e20d234fa1
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Next Year Sales' =
+			
+			CALCULATE([Total Sales], DATEADD(DateTable[Date], 1, YEAR))
+		lineageTag: 06e4e0d6-cb93-4393-bb5c-c2fde2450af7
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure NewYear = YEAR(MAX(Sales[So_Date])) + 1
+		formatString: 0
+		lineageTag: 6466c710-f2cc-4f41-a82b-f0668b8835f9
+
+	measure '2024 - 2025 Difference' = [Next Year Sales] - [Total Sales]
+		lineageTag: d2c028e0-1701-49d6-8896-dd8b237f0e5e
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Highligh Text 2025' =
+			
+			SWITCH(TRUE(),
+			        [Total Sales] > [Last Year Sales], "Green",
+			        [Total Sales] < [Last Year Sales], "Red"
+			    )
+		lineageTag: da51c6f6-3fd1-46f8-8171-c2416f5e8c06
+
+	measure 'Highlight Text 2024' =
+			
+			SWITCH(TRUE(),
+			        [Total Sales] > [Next Year Sales], "Green",
+			        [Total Sales] < [Next Year Sales], "Red"
+			    )
+		lineageTag: 3b78f6de-38c6-4398-964e-7d0aa6e376b5
+
+	partition _measures = m
+		mode: import
+		source =
+				let
+				    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i44FAA==", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [Column1 = _t]),
+				    #"Changed Type" = Table.TransformColumnTypes(Source,{{"Column1", type text}}),
+				    #"Removed Columns" = Table.RemoveColumns(#"Changed Type",{"Column1"})
+				in
+				    #"Removed Columns"
+
+	annotation PBI_ResultType = Table
+

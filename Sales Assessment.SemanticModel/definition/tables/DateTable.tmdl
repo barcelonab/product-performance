@@ -1,0 +1,57 @@
+table DateTable
+	lineageTag: 4bb7938e-80e1-4546-95f3-39ee6f583d63
+	dataCategory: Time
+
+	column Date
+		isKey
+		formatString: General Date
+		lineageTag: 2de51a63-e553-4cd1-b869-728a52746277
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Date]
+
+		annotation SummarizationSetBy = Automatic
+
+	column MonthNumber
+		formatString: 0
+		lineageTag: 9996d5cb-a70c-43b2-859a-104e9af97e82
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [MonthNumber]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Month
+		lineageTag: 16308410-692b-4664-bfbb-21a7fa1da494
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Month]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Year
+		formatString: 0
+		lineageTag: b0fd906f-c0df-41de-b565-5376682eac41
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Year]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition DateTable = calculated
+		mode: import
+		source = ```
+				
+				VAR _cal = CALENDAR(MIN(Sales[So_Date]), MAX(Sales[So_Date]))
+				
+				RETURN
+				    ADDCOLUMNS(_cal,
+				                "MonthNumber", MONTH([Date]),
+				                "Month", FORMAT([Date], "mmm"),
+				                "Year", YEAR([Date])
+				            )
+				
+				```
+
+	annotation PBI_Id = 856d9dd3b02c4786865867b0b07013e9
+

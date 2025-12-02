@@ -3,10 +3,10 @@
   "name": "4ae0b7ba7409588825d1",
   "position": {
     "x": 0,
-    "y": 61.276595744680854,
+    "y": 60.945273631840791,
     "z": 1,
-    "height": 52.52279635258359,
-    "width": 399.75683890577511,
+    "height": 52.238805970149251,
+    "width": 476.3681592039801,
     "tabOrder": 1
   },
   "visual": {
@@ -42,7 +42,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Top 15 Products on 2025 Sales vs 2024 Sales'"
+                  "Value": "'Top 15 Products by Sales Change: 2025 Compared to 2024'"
                 }
               }
             },
